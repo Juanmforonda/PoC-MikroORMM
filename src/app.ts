@@ -15,7 +15,7 @@ export async function bootstrap(port = 3001) {
     RequestContext.create(db.em, next);
   });
 
-  // register routes here
+
   // ...
 
   app.get('/product', async (request) => {

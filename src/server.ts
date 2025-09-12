@@ -1,3 +1,4 @@
+import 'reflect-metadata'; //Lo que hace es habilitar el uso de decoradores en TypeScript. Es necesario para que MikroORM funcione correctamente con TypeScript.
 import { MikroORM } from '@mikro-orm/core';
 import config from './mikro-orm.config.js';
 import { Product } from './modules/product.entity.js';

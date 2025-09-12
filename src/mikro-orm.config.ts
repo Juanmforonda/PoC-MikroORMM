@@ -1,5 +1,6 @@
 import { MySqlDriver, Options } from '@mikro-orm/mysql';
 import { SeedManager } from '@mikro-orm/seeder';
+import { Migrator } from '@mikro-orm/migrations';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -14,7 +15,7 @@ const config: Options = {
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],
   debug: process.env.NODE_ENV === 'development',
-  extensions: [SeedManager],
+  extensions: [SeedManager, Migrator],
   migrations: {
     path: './dist/migrations',
     pathTs: './src/migrations',

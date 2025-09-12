@@ -7,6 +7,7 @@ import {
 import { Product } from './modules/product.entity.js';
 import { Category } from './modules/category.entity.js';
 import { Tag } from './modules/tag.entity.js';
+import { Order } from './modules/order.entity.js';
 
 export interface Services {
   orm: MikroORM;
@@ -14,6 +15,7 @@ export interface Services {
   product: EntityRepository<Product>;
   category: EntityRepository<Category>;
   tag: EntityRepository<Tag>;
+  order: EntityRepository<Order>;
 }
 
 let cache: Services;
@@ -32,5 +34,6 @@ export async function initORM(options?: Options): Promise<Services> {
     product: orm.em.getRepository(Product),
     category: orm.em.getRepository(Category),
     tag: orm.em.getRepository(Tag),
+    order: orm.em.getRepository(Order),
   });
 }

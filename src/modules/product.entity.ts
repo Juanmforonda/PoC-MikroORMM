@@ -8,6 +8,7 @@ import {
 import { Category } from './category.entity.js';
 import { Tag } from './tag.entity.js';
 import { BaseEntity } from './base.entity.js';
+import { Order } from './order.entity.js';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -23,9 +24,12 @@ export class Product extends BaseEntity {
   @Property()
   stock!: number;
 
-  @ManyToOne(() => Category, { nullable: false })
+  @ManyToOne(() => Category, { nullable: true })
   category!: Category;
 
   @ManyToMany(() => Tag)
   tags = new Collection<Tag>(this);
+
+  @ManyToMany(() => Order, (order) => order.products)
+  orders = new Collection<Order>(this);
 }

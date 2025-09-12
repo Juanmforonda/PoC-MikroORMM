@@ -17,9 +17,6 @@ export class Order extends BaseEntity {
   @Property({ type: 'decimal', precision: 10, scale: 2 })
   total!: number;
 
-  @Property({ onCreate: () => new Date() })
-  orderDate!: Date;
-
   @Property({ default: 'proceso' })
   status!: string; // proceso, completado, cancelado
 

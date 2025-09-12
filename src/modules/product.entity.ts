@@ -25,7 +25,7 @@ export class Product extends BaseEntity {
   stock!: number;
 
   @ManyToOne(() => Category, { nullable: true })
-  category!: Category;
+  category!: Category | null;
 
   @ManyToMany(() => Tag)
   tags = new Collection<Tag>(this);

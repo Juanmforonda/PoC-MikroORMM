@@ -6,15 +6,43 @@ import { Category } from '../modules/category.entity.js';
 const db = await initORM();
 
 async function findAll(req: Request, res: Response) {
+
+  const {categoryId, tagID, minPrice, maxPrice, inStock} = req.query;
+
+  // Si se proporcionan filtros, aplicarlos
+
+  const filters: any = {}; // Objeto para almacenar los filtros
+  if (categoryId === 'none'){
+    filters.category = null;
+  }
+  else if (categoryId) {
+    filters.category = { id: Number(categoryId) };
+  }
+  if (tagID) {
+    filters.tags = { id: Number(tagID) };
+  }
+  else if (tagID === 'none'){
+    filters.tags = { $isEmpty: true };
+  }
+  if (minPrice) {
+    filters.price = { $gte: Number(minPrice) };
+  }
+  if (maxPrice) {
+    filters.price = { ...filters.price, $lte: Number(maxPrice) };
+  }
+  //Filtro de stock con 3 opciones
+  if (inStock === 'true') {
+    filters.stock = { $gt: 0 }; // mayor a 0, es decir, en stock
+  } else if (inStock === 'false') {
+    filters.stock = { $lte: 0 }; // menor o igual a 0, es decir, sin stock
+  }
+  //No se aplican filtros de stock si inStock no está definido
+
   try {
-    const products = await db.em.find(
-      Product,
-      {},
-      { populate: ['category', 'tags'] }
-    );
-    res.status(200).json({ message: 'found all products', data: products });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    const products = await db.em.find(Product, filters, { populate: ['category', 'tags', 'orders'] });
+    res.status(200).json({ message: 'list of products', data: products });
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving products', error });
   }
 }
 
@@ -123,20 +151,6 @@ async function remove(req: Request, res: Response) {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    // Chequeo si tiene órdenes asociadas
-    const productWithOrders = await db.em.findOne(
-      Product,
-      { id },
-      { populate: ['orders'] }
-    );
-
-    if (productWithOrders && productWithOrders.orders.length > 0) {
-      return res.status(400).json({
-        message:
-          'Cannot delete product with existing orders. Cancel orders first.',
-      });
-    }
-
     await db.em.removeAndFlush(productToRemove);
     res.status(200).json({ message: 'Product removed' });
   } catch (error: any) {
@@ -144,4 +158,29 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove };
+//Otras queries
+
+async function findByCategory(req: Request, res: Response) {
+  const categoryId = Number.parseInt(req.params.categoryId);
+  try {
+    const products = await db.em.find(Product, { category: { id: categoryId } }, { populate: ['category', 'tags', 'orders'] });
+    res.status(200).json({ message: 'list of products', data: products });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error retrieving products', error });
+  }
+}
+
+async function findOutOfStock(req: Request, res: Response) {
+  try {
+    const products = await db.em.find(Product, { stock: { $lte: 0 } }, { populate: ['category', 'tags', 'orders'] }); 
+    res.status(200).json({ message: 'list of out-of-stock products', data: products });
+  } catch (error: any) {
+    res.status(500).json({ message: 'Error retrieving products', error });
+  }
+}
+
+
+
+
+
+export { findAll, findOne, add, update, remove, findByCategory, findOutOfStock };

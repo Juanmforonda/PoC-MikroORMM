@@ -171,36 +171,6 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-// Función adicional para calcular el total de una orden
-async function calculateTotal(req: Request, res: Response) {
-  try {
-    const id = Number.parseInt(req.params.id);
-    const order = await db.em.findOne(
-      Order,
-      { id },
-      { populate: ['products'] }
-    );
 
-    if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
 
-    let total = 0;
-    for (const product of order.products) {
-      total += product.price;
-    }
-
-    // Actualizar el total en la orden
-    order.total = total;
-    await db.em.flush();
-
-    res.status(200).json({
-      message: 'Total calculated',
-      data: { orderId: id, total: total },
-    });
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-}
-
-export { findAll, findOne, add, update, remove, calculateTotal };
+export { findAll, findOne, add, update, remove };

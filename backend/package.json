@@ -1,0 +1,54 @@
+{
+  "name": "poc-mikroormm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "node --loader ts-node/esm --experimental-specifier-resolution=node src/index.ts",
+    "dev:watch": "nodemon --exec \"node --loader ts-node/esm --experimental-specifier-resolution=node\" src/index.ts",
+    "dev:server": "node --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
+    "migration:create": "mikro-orm migration:create",
+    "migration:up": "mikro-orm migration:up",
+    "migration:down": "mikro-orm migration:down",
+    "schema:create": "mikro-orm schema:create",
+    "schema:drop": "mikro-orm schema:drop",
+    "schema:update": "mikro-orm schema:update",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Juanmforonda/PoC-MikroORMM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Juanmforonda/PoC-MikroORMM/issues"
+  },
+  "homepage": "https://github.com/Juanmforonda/PoC-MikroORMM#readme",
+  "dependencies": {
+    "@mikro-orm/cli": "^6.5.2",
+    "@mikro-orm/core": "^6.5.2",
+    "@mikro-orm/migrations": "^6.5.2",
+    "@mikro-orm/mysql": "^6.5.2",
+    "@mikro-orm/reflection": "^6.5.2",
+    "@mikro-orm/seeder": "^6.5.2",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.1",
+    "@types/supertest": "^6.0.3",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

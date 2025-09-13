@@ -18,8 +18,8 @@ export class Product extends BaseEntity {
   @Property()
   price!: number;
 
-  @Property()
-  description!: string;
+  @Property({ nullable: true })
+  description?: string;
 
   @Property()
   stock!: number;

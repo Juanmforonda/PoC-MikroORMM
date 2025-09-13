@@ -1,5 +1,6 @@
 import { RequestContext } from '@mikro-orm/core';
 import express from 'express';
+import cors from 'cors';
 import { initORM } from './db.js';
 import productRouter from './routes/product.routes.js';
 import categoryRouter from './routes/category.router.js';
@@ -9,6 +10,11 @@ import orderRouter from './routes/order.routes.js';
 export async function bootstrap(port = 3001) {
   const db = await initORM();
   const app = express();
+
+  app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  }));
 
   app.use(express.json());
 

@@ -37,6 +37,8 @@
     "@mikro-orm/mysql": "^6.5.2",
     "@mikro-orm/reflection": "^6.5.2",
     "@mikro-orm/seeder": "^6.5.2",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "mysql2": "^3.14.4"

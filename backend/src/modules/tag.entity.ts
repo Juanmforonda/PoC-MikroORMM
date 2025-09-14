@@ -13,8 +13,8 @@ export class Tag extends BaseEntity {
   @Property()
   name!: string;
 
-  @Property()
-  description!: string;
+  @Property({ nullable: true })
+  description?: string;
 
   @ManyToMany(() => Product, (product) => product.tags)
   products = new Collection<Product>(this);

@@ -8,8 +8,8 @@ export class Category extends BaseEntity {
   @Property()
   name!: string;
 
-  @Property()
-  description!: string;
+  @Property({ nullable: true })
+  description?: string;
 
   @OneToMany(() => 'Product', 'category')
   products = new Collection<Product>(this);

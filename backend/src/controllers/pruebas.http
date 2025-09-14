@@ -11,3 +11,19 @@ Content-Type: application/json
   "name": "Nueva categoría",
   "description": "Categoría de prueba para testeo"
 }
+
+###
+POST http://localhost:3001/api/products
+Content-Type: application/json
+
+{
+  "name": "baggio",
+  "price": 4500,
+  "stock": 20,
+  "description": "Sabor naranja",
+  "categoryId": 1,
+  "tagIds": [1]
+}
+
+###
+GET http://localhost:3001/api/tags

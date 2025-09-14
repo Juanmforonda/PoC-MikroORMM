@@ -6,16 +6,20 @@ import {
   deleteProduct,
 } from "../api/products.js";
 import { getCategories } from "../api/categories.js";
+import { getTags } from "../api/tags.js";
+
 
 export function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [tags, setTags] = useState([]);
   const [form, setForm] = useState({
     name: "",
     price: "",
     description: "",
     stock: "",
     categoryId: "",
+    tagIds: [],
   });
   const [filter, setFilter] = useState("all");
   const [filterCategory, setFilterCategory] = useState("");
@@ -36,6 +40,16 @@ export function Products() {
       setError(err.response?.data?.message || err.message);
     }
   };
+
+  const fetchTags = async () => {
+  try {
+    const data = await getTags();
+    setTags(Array.isArray(data) ? data : []);
+  } catch (err) {
+    setError(err.response?.data?.message || err.message);
+  }
+};
+
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -59,6 +73,7 @@ export function Products() {
 
   useEffect(() => {
     fetchCategories();
+    fetchTags();
   }, []);
 
   useEffect(() => {
@@ -76,6 +91,7 @@ export function Products() {
         description: form.description?.trim() || undefined,
         stock: form.stock !== "" ? parseInt(form.stock, 10) : 0,
         categoryId: form.categoryId ? parseInt(form.categoryId, 10) : undefined,
+        tagIds: form.tagIds,
       });
       setForm({ name: "", price: "", description: "", stock: "", categoryId: "" });
       setShowForm(false);
@@ -93,6 +109,7 @@ export function Products() {
       description: product.description || "",
       stock: product.stock || 0,
       categoryId: product.category?.id || "",
+      tagIds: product.tags?.map((t) => t.id) || [],
     });
   };
 
@@ -104,6 +121,7 @@ export function Products() {
         description: editForm.description.trim() || undefined,
         stock: parseInt(editForm.stock, 10) || 0,
         categoryId: editForm.categoryId ? parseInt(editForm.categoryId, 10) : undefined,
+        tagIds: editForm.tagIds, 
       });
       setEditingProduct(null);
       fetchProducts();
@@ -178,7 +196,36 @@ export function Products() {
               <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
-          <button type="submit" className="btn btn-success">Agregar</button>
+        <div>
+          <label style={{ marginRight: "8px" }}>Tags:</label>
+          {tags.map((t) => (
+            <label key={t.id} style={{ marginRight: "10px" }}>
+              <input
+                type="checkbox"
+                checked={form.tagIds.includes(t.id)}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setForm((s) => ({ ...s, tagIds: [...s.tagIds, t.id] }));
+                  } else {
+                    setForm((s) => ({
+                      ...s,
+                      tagIds: s.tagIds.filter((id) => id !== t.id),
+                    }));
+                  }
+                }}
+              />
+              {t.name}
+            </label>
+          ))}
+        </div>
+
+        {/* 👇 el botón queda en otra línea */}
+        <div style={{ marginTop: "10px" }}>
+          <button type="submit" className="btn btn-success">
+            Agregar
+          </button>
+        </div>
+
         </form>
       )}
 
@@ -192,6 +239,7 @@ export function Products() {
             <th>Precio</th>
             <th>Stock</th>
             <th>Categoría</th>
+            <th>Tags</th> 
             <th>Acciones</th>
           </tr>
         </thead>
@@ -204,6 +252,7 @@ export function Products() {
               <td>${p.price.toFixed(2)}</td>
               <td style={{ color: p.stock > 0 ? "green" : "red" }}>{p.stock}</td>
               <td>{p.category?.name || "Sin categoría"}</td>
+              <td>{p.tags?.map((t) => t.name).join(", ") || "—"}</td>
               <td>
                 <button className="btn btn-warning btn-sm" onClick={() => openEdit(p)}>Editar</button>
                 <button className="btn btn-danger btn-sm" onClick={() => handleDelete(p.id)}>Eliminar</button>
@@ -237,6 +286,29 @@ export function Products() {
                   </option>
                 ))}
               </select>
+              <label>Tags:</label>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+                {tags.map((t) => (
+                  <label key={t.id}>
+                    <input
+                      type="checkbox"
+                      checked={editForm.tagIds.includes(t.id)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setEditForm((s) => ({ ...s, tagIds: [...s.tagIds, t.id] }));
+                        } else {
+                          setEditForm((s) => ({
+                            ...s,
+                            tagIds: s.tagIds.filter((id) => id !== t.id),
+                          }));
+                        }
+                      }}
+                    />
+                    {t.name}
+                  </label>
+                ))}
+              </div>
+
             </label>
 
             <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>

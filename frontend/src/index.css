@@ -235,3 +235,31 @@ form {
   background: #f9f9f9;
 }
 
+/* Tabla de tags */
+.tag-table {
+  width: 100%;
+  max-width: 7000px;
+  margin-top: 1rem;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.tag-table th,
+.tag-table td {
+  padding: 0.6rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.tag-table th {
+  background: #f1f3f5;
+  font-weight: 600;
+  color: #444;
+}
+
+.tag-table tr:hover {
+  background: #f9f9f9;
+}

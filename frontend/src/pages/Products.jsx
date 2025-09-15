@@ -187,7 +187,7 @@ export function Products() {
         className="btn btn-primary"
         onClick={() => setShowForm((s) => !s)}
       >
-        ➕ Agregar producto
+        Agregar producto
       </button>
 
       <button
@@ -302,7 +302,6 @@ export function Products() {
             ))}
           </div>
 
-          {/* 👇 el botón queda en otra línea */}
           <div style={{ marginTop: '10px' }}>
             <button type="submit" className="btn btn-success">
               Agregar

@@ -295,7 +295,7 @@ async function actualizarStockMasivo(req: Request, res: Response) {
 
     console.log(`Query ejecutada en ${endTime - startTime}ms`);
 
-    // Obtener productos DESPUÉS para comparar
+    // Obtener productos para comparar
     const productosActualizados = await em.find(
       Product,
       {

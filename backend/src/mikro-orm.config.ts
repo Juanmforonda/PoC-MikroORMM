@@ -1,5 +1,6 @@
 import { MySqlDriver, Options } from '@mikro-orm/mysql';
 import { SeedManager } from '@mikro-orm/seeder';
+import {SqlHighlighter} from "@mikro-orm/sql-highlighter";
 import { Migrator } from '@mikro-orm/migrations';
 import * as dotenv from 'dotenv';
 
@@ -20,6 +21,7 @@ const config: Options = {
     path: './dist/migrations',
     pathTs: './src/migrations',
   },
+  highlighter: new SqlHighlighter(),
 };
 
 export default config;

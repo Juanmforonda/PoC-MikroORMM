@@ -206,20 +206,20 @@ async function actualizarStockMasivo(req, res) {
     const { incremento = 50 } = req.body; // Cantidad a agregar
     try {
         const em = db.em.fork(); // Nuevo contexto
-        // Obtener productos con stock bajo ANTES
+        // Obtener productos con stock bajo
         const productosAntesUpdate = await em.find(Product, {
             stock: { $lt: 10 },
         }, {
             populate: ['category'],
         });
-        console.log(`🔍 Encontrados ${productosAntesUpdate.length} productos con stock bajo`);
+        console.log(` Encontrados ${productosAntesUpdate.length} productos con stock bajo`);
         if (productosAntesUpdate.length === 0) {
             return res.json({
                 message: 'No hay productos con stock bajo',
                 productosActualizados: 0,
             });
         }
-        // MAGIA MIKROORM: Modificar en memoria
+        // Modificar en memoria
         productosAntesUpdate.forEach((producto) => {
             const stockAnterior = producto.stock;
             producto.stock += incremento;
@@ -230,8 +230,8 @@ async function actualizarStockMasivo(req, res) {
         const startTime = Date.now();
         await em.flush();
         const endTime = Date.now();
-        console.log(`⚡ Query ejecutada en ${endTime - startTime}ms`);
-        // 📊 Obtener productos DESPUÉS para comparar
+        console.log(`Query ejecutada en ${endTime - startTime}ms`);
+        // Obtener productos para comparar
         const productosActualizados = await em.find(Product, {
             id: { $in: productosAntesUpdate.map((p) => p.id) },
         }, {
@@ -251,7 +251,7 @@ async function actualizarStockMasivo(req, res) {
         });
     }
     catch (error) {
-        console.error('❌ Error en actualización masiva:', error);
+        console.error(' Error en actualización masiva:', error);
         res.status(500).json({
             message: 'Error actualizando stock',
             error: error.message,

@@ -1,8 +1,8 @@
-import { api } from "./axiosInstance.js";
+import { api } from './axiosInstance.js';
 
 export async function getProducts(params = {}) {
   try {
-    const res = await api.get("/api/products", { params });
+    const res = await api.get('/api/products', { params });
     console.log('API Response:', res.data); // Para debug
     // Extraer el array de productos desde res.data.data
     return Array.isArray(res.data?.data) ? res.data.data : [];
@@ -14,7 +14,7 @@ export async function getProducts(params = {}) {
 
 export async function createProduct(payload) {
   // payload esperado: { name, price, description?, stock?, categoryId? }
-  const res = await api.post("/api/products", payload);
+  const res = await api.post('/api/products', payload);
   return res.data?.data ?? res.data;
 }
 
@@ -25,5 +25,12 @@ export async function updateProduct(id, payload) {
 
 export async function deleteProduct(id) {
   const res = await api.delete(`/api/products/${id}`);
+  return res.data;
+}
+
+export async function actualizarStockMasivo(incremento = 50) {
+  const res = await api.post('/api/products/update-stock-masivo', {
+    incremento,
+  });
   return res.data;
 }

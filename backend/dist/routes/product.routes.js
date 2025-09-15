@@ -1,16 +1,6 @@
 import { Router } from 'express';
-import {
-  findAll,
-  findOne,
-  add,
-  update,
-  remove,
-  findByCategory,
-  findOutOfStock,
-  actualizarStockMasivo,
-} from '../controllers/product.controller.js';
+import { findAll, findOne, add, update, remove, findByCategory, findOutOfStock, actualizarStockMasivo, } from '../controllers/product.controller.js';
 const productRouter = Router();
-
 productRouter.get('/', findAll);
 productRouter.get('/out-of-stock', findOutOfStock);
 productRouter.get('/category/:categoryId', findByCategory);
@@ -19,5 +9,4 @@ productRouter.post('/', add);
 productRouter.post('/update-stock-masivo', actualizarStockMasivo);
 productRouter.put('/:id', update);
 productRouter.delete('/:id', remove);
-
 export default productRouter;

@@ -143,7 +143,7 @@ export function Tags() {
             <label>Descripción<input value={editForm.description} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} /></label>
             <div style={{ marginTop: "1rem", display: "flex", gap: "0.5rem" }}>
               <button className="btn btn-success" onClick={saveEdit}>💾 Guardar</button>
-              <button className="btn btn-danger" onClick={() => setEditingTag(null)}>❌ Cancelar</button>
+              <button className="btn btn-danger" onClick={() => setEditingTag(null)}> Cancelar</button>
             </div>
           </div>
         </div>
